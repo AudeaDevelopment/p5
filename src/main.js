@@ -1,8 +1,10 @@
-import React, { PureComponent } from 'react';
-import P5Wrapper from 'react-p5-wrapper';
-import MainSketch from './component/app';
+import React, { Component } from 'react';
+import ReactDom from 'react-dom';
 
-class App extends PureComponent {
+import P5Wrapper from 'react-p5-wrapper';
+import sketch from './component/app';
+
+class App extends Component {
   state = { data: '' };
 
   setStateAsync = state =>
@@ -10,7 +12,14 @@ class App extends PureComponent {
       this.setState(state, resolve);
     });
 
-  render = () => <P5Wrapper sketch={MainSketch} />;
+  render = () => {
+    console.log('is rendering');
+    return (
+      <div style={{ width: '100%', border: '1px solid black' }}>
+        <P5Wrapper sketch={sketch} />
+      </div>
+    );
+  };
 }
 
-export default App;
+ReactDom.render(<App />, document.getElementById('root'));
