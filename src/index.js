@@ -1,19 +1,16 @@
 import React, { PureComponent } from 'react';
+import P5Wrapper from 'react-p5-wrapper';
+import MainSketch from './component/app';
 
 class App extends PureComponent {
   state = { data: '' };
 
-  async componentDidMount() {
-    const res = await fetch('https://someapi');
-    const { data } = await res.json();
-    await this.setStateAsync(...data);
-  }
-
   setStateAsync = state =>
-    new Promise((resolve) => {
+    new Promise(resolve => {
       this.setState(state, resolve);
     });
-  render = () => <div>{this.state.data}</div>;
+
+  render = () => <P5Wrapper sketch={MainSketch} />;
 }
 
 export default App;
