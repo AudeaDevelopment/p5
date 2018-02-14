@@ -1,1 +1,0 @@
-{"dependencies":[{"name":"./main.js","dynamic":true}],"generated":{"html":"<!DOCTYPE html>\n<html>\n  <head>\n    <title> tada </title>\n\n  </head>\n  <body>\n    <div id=\"root\"></div>\n\n    <script src=\"/dist/e4136af8a6f0b006a0981fda3faeef90.js\"></script>\n  </body>\n</html>\n"},"hash":"f0a0dbb3b5fa43bd7773dbcb12e5d98c","cacheData":{}}
