@@ -1,80 +1,116 @@
-// pong clone
-// mouse to control both paddles
+// declare variables
+let ballX = 750;
+let ballY = 300;
+let ballXV = -4;
+let ballYV = 1;
+const rectX = 10;
+let rectY = 500;
+let lives = 3;
 
-let paddleA,
-  paddleB,
-  ball,
-  wallTop,
-  wallBottom;
-const MAX_SPEED = 10;
-export function pong() {
-  function setup() {
-    createCanvas(800, 400);
-    // frameRate(6);
+// define pong function
+const pong = p => {
+  // set up environment
+  p.setup = () => {
+    p.createCanvas(600, 600);
+    p.background(0);
+    p.noStroke();
+    p.fill(186, 221, 173);
+  };
 
-    paddleA = createSprite(30, height / 2, 10, 100);
-    paddleA.immovable = true;
+  // draw environment, set checks and functionality for for collision, score checking, etc
+  p.draw = () => {
+    p.image(300, 300, 100, 100);
+    p.background(255, 0, 0);
+    p.setText();
+    p.setShapes();
+    p.bounceCheck();
+    p.increment();
+    p.scoreCheck();
+  };
 
-    paddleB = createSprite(width - 28, height / 2, 10, 100);
-    paddleB.immovable = true;
+  // ball pathing
+  p.increment = () => {
+    ballX += ballXV;
+    ballY += ballYV;
+    // when ball should move in millseconds converted to seconds
+    if (p.millis() % 1000 === 0) {
+      ballXV *= 2;
+    }
+  };
+  // define paddle movement based on mouse y-axis
+  p.mouseMoved = () => {
+    rectY = p.mouseY;
+  };
 
-    wallTop = createSprite(width / 2, -30 / 2, width, 30);
-    wallTop.immovable = true;
+  // define ball interaction
+  p.ball = (x, y) => {
+    p.ellipse(x - 2, y, 30, 30);
+    p.ellipse(x, y, 30, 30);
+  };
 
-    wallBottom = createSprite(width / 2, height + 30 / 2, width, 30);
-    wallBottom.immovable = true;
+  // define shapes of paddle and ball
+  p.setShapes = () => {
+    p.rect(rectX, rectY, 20, 100);
+    p.ball(ballX, ballY);
+  };
 
-    ball = createSprite(width / 2, height / 2, 10, 10);
-    ball.maxSpeed = MAX_SPEED;
-
-    paddleA.shapeColor = paddleB.shapeColor = ball.shapeColor = color(
-      255,
-      255,
-      255,
-    );
-
-    ball.setSpeed(MAX_SPEED, -180);
-  }
-
-  function draw() {
-    background(0);
-
-    paddleA.position.y = constrain(
-      mouseY,
-      paddleA.height / 2,
-      height - paddleA.height / 2,
-    );
-    paddleB.position.y = constrain(
-      mouseY,
-      paddleA.height / 2,
-      height - paddleA.height / 2,
-    );
-
-    ball.bounce(wallTop);
-    ball.bounce(wallBottom);
-
-    if (ball.bounce(paddleA)) {
-      const swing = (ball.position.y - paddleA.position.y) / 3;
-      ball.setSpeed(MAX_SPEED, ball.getDirection() + swing);
+  // define functionality when ball hits slider or wall
+  p.sliderBounce = () => {
+    if (rectY < ballY && rectY + 100 > ballY) {
+      ballXV *= -1;
+      lives += 1;
+    }
+  };
+  // when ball hits a wall
+  p.wallBounce = () => {
+    ballXV *= -1;
+  };
+  // check location of ball against y axis from max to min height
+  p.bounceCheck = () => {
+    if (ballY < 0 || ballY > 600) {
+      ballYV *= -1;
     }
 
-    if (ball.bounce(paddleB)) {
-      const swing = (ball.position.y - paddleB.position.y) / 3;
-      ball.setSpeed(MAX_SPEED, ball.getDirection() - swing);
+    // invoke bounce off slider based on x values
+    if (ballX < 40 && ballXV < 0) {
+      p.sliderBounce();
     }
 
-    if (ball.position.x < 0) {
-      ball.position.x = width / 2;
-      ball.position.y = height / 2;
-      ball.setSpeed(MAX_SPEED, 0);
+    // invoke bounce off slider based on x values
+    if (ballX > 580 && ballXV > 0) {
+      p.wallBounce();
+    }
+    // lose a life if the ball does not hit
+    if (ballX < 0) {
+      ballX = 750;
+      lives -= 1;
+    }
+  };
+
+  // check score
+  p.scoreCheck = () => {
+    // if lives = 0, stop looping application, and lose
+    if (lives === 0) {
+      p.noLoop();
+      lives = 'YOU LOSE';
     }
 
-    if (ball.position.x > width) {
-      ball.position.x = width / 2;
-      ball.position.y = height / 2;
-      ball.setSpeed(MAX_SPEED, 180);
+    // if lives = 10, stop looping application and win
+    if (lives === 10) {
+      p.noLoop();
+      lives = 'YOU WIN';
     }
+  };
 
-    drawSprites();
-  }
-}
+  // set text alignment
+  p.setText = () => {
+    p.textAlign(p.CENTER);
+    p.textSize(80);
+    p.text(lives, 300, 100);
+  };
+
+  // empty image invocation for image loading
+  p.prepImage = () => {};
+};
+
+export default pong;

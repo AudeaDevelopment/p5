@@ -19,7 +19,7 @@ const pong = p => {
 
   // draw environment, set checks and functionality for for collision, score checking, etc
   p.draw = () => {
-    p.image(head, 300, 300, 100, 100);
+    p.image(p, 300, 300, 100, 100);
     p.background(255, 0, 0);
     p.setText();
     p.setShapes();
