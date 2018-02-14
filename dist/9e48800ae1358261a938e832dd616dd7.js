@@ -75459,47 +75459,34 @@ var P5Wrapper = (function (_React$Component) {
 exports['default'] = P5Wrapper;
 module.exports = exports['default'];
 },{"react":8,"p5":16}],6:[function(require,module,exports) {
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var sketch = exports.sketch = function sketch(p) {
+  var rotation = 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  p.setup = function () {
+    p.createCanvas(600, 400, p.WEBGL);
+  };
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MainSketch = function (_PureComponent) {
-  _inherits(MainSketch, _PureComponent);
-
-  function MainSketch() {
-    _classCallCheck(this, MainSketch);
-
-    return _possibleConstructorReturn(this, (MainSketch.__proto__ || Object.getPrototypeOf(MainSketch)).apply(this, arguments));
-  }
-
-  _createClass(MainSketch, [{
-    key: 'render',
-    value: function render() {
-      return _react2['default'].createElement('div', null);
+  p.redraw = function (props) {
+    if (props.rotation) {
+      rotation = props.rotation * (Math.PI / 180);
     }
-  }]);
+  };
 
-  return MainSketch;
-}(_react.PureComponent);
-
-exports['default'] = MainSketch;
-},{"react":8}],4:[function(require,module,exports) {
+  p.draw = function () {
+    p.background(100);
+    p.noStroke();
+    p.push();
+    p.rotateY(rotation);
+    p.box(100);
+    p.pop();
+  };
+};
+},{}],4:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
